@@ -4,9 +4,8 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 
-import com.example.anvanthinh.music.ListSongFragment;
 import com.example.anvanthinh.music.R;
-import com.example.anvanthinh.music.SongFragment;
+import com.example.anvanthinh.music.ui.SongFragment;
 
 /**
  * Created by An Van Thinh on 2/19/2017.

@@ -1,11 +1,9 @@
-package com.example.anvanthinh.music;
+package com.example.anvanthinh.music.Controller;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
-import com.example.anvanthinh.music.Controller.ActivityController;
-import com.example.anvanthinh.music.Controller.OnePaneController;
-import com.example.anvanthinh.music.Controller.TwoPaneController;
+import com.example.anvanthinh.music.R;
 
 public class MainActivity extends AppCompatActivity {
     private ActivityController mController;

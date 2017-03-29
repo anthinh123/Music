@@ -1,4 +1,4 @@
-package com.example.anvanthinh.music;
+package com.example.anvanthinh.music.ui;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -7,6 +7,10 @@ import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import com.example.anvanthinh.music.R;
+import com.example.anvanthinh.music.adapter.SongPagerAdapter;
+import com.example.anvanthinh.music.adapter.ZoomOutPageTransformer;
 import com.ogaclejapan.smarttablayout.SmartTabLayout;
 
 
