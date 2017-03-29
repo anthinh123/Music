@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">Music</string>
+    <string name="songs">Songs</string>
+    <string name="album">Album</string>
+    <string name="singer">Singer</string>
+    <string name="play_list">Play_list</string>
+    <string name="music">Music</string>
+</resources>
