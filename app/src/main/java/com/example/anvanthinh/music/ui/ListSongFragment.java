@@ -1,6 +1,10 @@
 package com.example.anvanthinh.music.ui;
 
+import android.app.Activity;
 import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.annotation.Nullable;
@@ -13,7 +17,9 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 
+import com.example.anvanthinh.music.Animation.BlurBuilder;
 import com.example.anvanthinh.music.R;
 import com.example.anvanthinh.music.adapter.ListAdapter;
 
@@ -25,12 +31,15 @@ public class ListSongFragment extends Fragment implements LoaderManager.LoaderCa
     private final int ID_SONG_LOADER = 0;
     private ListAdapter mAdapter;
     private RecyclerView mList;
+    private RecyclerView.LayoutManager mLayout;
+    private InforMusicMini mMiniInfor;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.list_song_fragment , null);
         mList = (RecyclerView)v.findViewById(R.id.list_song);
+        mMiniInfor = (InforMusicMini)v.findViewById(R.id.mini_infor);
         getActivity().getSupportLoaderManager().initLoader(ID_SONG_LOADER, null, this);
         return v;
     }
@@ -38,7 +47,8 @@ public class ListSongFragment extends Fragment implements LoaderManager.LoaderCa
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        mList.setLayoutManager(new LinearLayoutManager(getActivity()));
+        mLayout = new LinearLayoutManager(getActivity());
+        mList.setLayoutManager(mLayout);
     }
 
     @Override
@@ -54,13 +64,18 @@ public class ListSongFragment extends Fragment implements LoaderManager.LoaderCa
 
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
-        mAdapter = new ListAdapter(getContext(), data);
+        mAdapter = new ListAdapter( getContext(), data);
+        mAdapter.addObserver(mMiniInfor);
         mList.setAdapter(mAdapter);
     }
 
     @Override
     public void onLoaderReset(Loader<Cursor> loader) {
 
+    }
+
+    public void showMiniInfor(){
+        mMiniInfor.setVisibility(View.VISIBLE);
     }
 
 

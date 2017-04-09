@@ -19,5 +19,6 @@ public class MainActivity extends AppCompatActivity {
             mController = new OnePaneController(MainActivity.this);
         }
         mController.onCreate(savedInstanceState);
+
     }
 }

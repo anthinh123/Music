@@ -1,0 +1,10 @@
+[
+    {
+        "merged": "D:\\Android_Project\\Music\\Music\\player_view\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable\\icon_pause.png",
+        "source": "D:\\Android_Project\\Music\\Music\\player_view\\build\\intermediates\\bundles\\debug\\res\\drawable\\icon_pause.png"
+    },
+    {
+        "merged": "D:\\Android_Project\\Music\\Music\\player_view\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable\\icon_play.png",
+        "source": "D:\\Android_Project\\Music\\Music\\player_view\\build\\intermediates\\bundles\\debug\\res\\drawable\\icon_play.png"
+    }
+]
