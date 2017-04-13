@@ -9,6 +9,6 @@ import android.os.Bundle;
  */
 
 public interface ListViewCallbacks {
-    // ham dung de update lai trang thai thanh nho nho phia duoi listView
+    // ham dung de update lai trang thai khi bam vao 1 bai tren listView
     void update(Cursor c);
 }

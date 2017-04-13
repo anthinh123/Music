@@ -10,7 +10,7 @@ import android.view.ViewGroup;
 
 import com.example.anvanthinh.music.R;
 import com.example.anvanthinh.music.adapter.SongPagerAdapter;
-import com.example.anvanthinh.music.adapter.ZoomOutPageTransformer;
+import com.example.anvanthinh.music.Animation.ZoomOutPageTransformer;
 import com.ogaclejapan.smarttablayout.SmartTabLayout;
 
 
@@ -29,4 +29,9 @@ public class SongFragment extends Fragment  {
         mViewPager.setPageTransformer(true, new ZoomOutPageTransformer());
         return v;
     }
+
+//    private void movePlaySong(){
+//        ScreenPlaySongFragment f = new ScreenPlaySongFragment();
+//        getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.pane_list_music, f).commit();
+//    }
 }

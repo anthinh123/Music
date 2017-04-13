@@ -1,10 +1,11 @@
-package com.example.anvanthinh.music.adapter;
+package com.example.anvanthinh.music.Animation;
 
 import android.support.v4.view.ViewPager;
 import android.view.View;
 
 /**
  * Created by An Van Thinh on 3/29/2017.
+ * animation danh cho ViewPager
  */
 
 public class ZoomOutPageTransformer implements ViewPager.PageTransformer {

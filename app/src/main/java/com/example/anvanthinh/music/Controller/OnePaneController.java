@@ -1,9 +1,11 @@
 package com.example.anvanthinh.music.Controller;
 
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
@@ -12,7 +14,9 @@ import android.view.MenuItem;
 import android.widget.LinearLayout;
 
 import com.example.anvanthinh.music.Animation.BlurBuilder;
+import com.example.anvanthinh.music.ListViewCallbacks;
 import com.example.anvanthinh.music.R;
+import com.example.anvanthinh.music.ui.ListSongFragment;
 import com.example.anvanthinh.music.ui.SongFragment;
 
 /**
@@ -53,5 +57,15 @@ public class OnePaneController extends ActivityController {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onBackPressed(){
+        FragmentManager fm = mActivity.getSupportFragmentManager();
+        if (fm.getBackStackEntryCount() > 0) {
+            fm.popBackStack();
+        } else {
+            super.onBackPressed();
+        }
     }
 }

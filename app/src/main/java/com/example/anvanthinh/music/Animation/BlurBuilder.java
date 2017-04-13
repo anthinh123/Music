@@ -1,5 +1,6 @@
 package com.example.anvanthinh.music.Animation;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.renderscript.Allocation;
@@ -9,12 +10,14 @@ import android.renderscript.ScriptIntrinsicBlur;
 
 /**
  * Created by An Van Thinh on 4/5/2017.
+ * lop tao anh nen mo mo
  */
 
 public class BlurBuilder {
     private static final float BITMAP_SCALE = 0.05f;
     private static final float BLUR_RADIUS = 8.5f;
 
+    @SuppressLint("NewApi")
     public static Bitmap blur(Context context, Bitmap image) {
         int width = Math.round(image.getWidth() * BITMAP_SCALE);
         int height = Math.round(image.getHeight() * BITMAP_SCALE);

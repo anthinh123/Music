@@ -1,13 +1,20 @@
 package com.example.anvanthinh.music.adapter;
 
+import android.annotation.TargetApi;
 import android.app.Activity;
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.icu.text.SimpleDateFormat;
+import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.NotificationCompat;
+import android.support.v4.app.TaskStackBuilder;
 import android.support.v4.widget.CursorAdapter;
 import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
@@ -17,13 +24,16 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
+import android.widget.RemoteViews;
 import android.widget.TextView;
 
+import com.example.anvanthinh.music.Controller.MainActivity;
 import com.example.anvanthinh.music.ListViewCallbacks;
 import com.example.anvanthinh.music.MusicService;
 import com.example.anvanthinh.music.R;
 import com.example.anvanthinh.music.ui.InforMusicMini;
 import com.example.anvanthinh.music.ui.ListSongFragment;
+import com.example.anvanthinh.music.ui.NotificationMusic;
 
 import java.util.ArrayList;
 
@@ -32,13 +42,17 @@ import java.util.ArrayList;
  */
 
 public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder>   {
+    private static final int ID_NOTIFICATION = 100;
     private CursorAdapter mCursorAdapter;
     private Context mContext;
     private int mPosition;
+    private ListSongFragment mListSongFragment;
     private ArrayList<ListViewCallbacks> mObserver = new ArrayList<ListViewCallbacks>();
 
-    public ListAdapter ( Context c, Cursor cursor ){
+
+    public ListAdapter ( Context c, Cursor cursor, ListSongFragment f ){
         mContext = c;
+        mListSongFragment = f;
         mCursorAdapter = new CursorAdapter(mContext, cursor, 0) {
             @Override
             public View newView(Context context, Cursor cursor, ViewGroup parent) {
@@ -63,6 +77,7 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder>   
         return new ViewHolder(v);
     }
 
+    @TargetApi(Build.VERSION_CODES.N)
     @Override
     public void onBindViewHolder(ListAdapter.ViewHolder holder, int position) {
         mCursorAdapter.getCursor().moveToPosition(position);
@@ -103,9 +118,9 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder>   
             mSinger.setOnClickListener(this);
             mMore.setOnClickListener(this);
             mInforSong.setOnClickListener(this);
-
         }
 
+        @TargetApi(Build.VERSION_CODES.LOLLIPOP)
         @Override
         public void onClick(View v) {
             int id = v.getId();
@@ -118,6 +133,7 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder>   
                 case R.id.singer:
                     playSong(this.getAdapterPosition());
                     showMiniInfor();
+                    showNotification();
                     updateMiniInfor(this.getAdapterPosition());
                     mItemView.setBackground(mContext.getResources().getDrawable(R.drawable.custom_item_music));
                     break;
@@ -136,12 +152,13 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder>   
         }
     }
 
-    private void updateMiniInfor(int postion) {
+    public void updateMiniInfor(int postion) {
         Cursor c = (Cursor) mCursorAdapter.getItem(postion);
         sendNotify(c);
     }
 
     private void showMiniInfor() {
+        mListSongFragment.showMiniInfor();
     }
 
     private void playSong(int postion) {
@@ -162,6 +179,20 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder>   
         for (ListViewCallbacks observer : mObserver){
             observer.update(c);
         }
+    }
+
+    // ham hien thi notification khi bam choi nhac
+    public void showNotification(){
+        RemoteViews remoteViews = new RemoteViews(mContext.getPackageName(), R.layout.infor_music_mini);
+        NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(
+                mContext).setSmallIcon(R.drawable.ic_more).setContent(remoteViews);
+//        Intent resultIntent = new Intent(mContext, MainActivity.class);
+//        TaskStackBuilder stackBuilder = TaskStackBuilder.create(mContext);
+//        stackBuilder.addParentStack(NotificationMusic.class);
+//        stackBuilder.addNextIntent(resultIntent);
+//        PendingIntent resultPendingIntent = stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
+        NotificationManager mNotificationManager = (NotificationManager) mContext.getSystemService(Context.NOTIFICATION_SERVICE);
+        mNotificationManager.notify(ID_NOTIFICATION, mBuilder.build());
     }
 
 }

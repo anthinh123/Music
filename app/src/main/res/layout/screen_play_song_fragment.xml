@@ -12,7 +12,7 @@
         android:layout_height="wrap_content">
 
         <TextView
-            android:text="Se khong con nua"
+            android:text="Na"
             android:id="@+id/song"
             style="@style/TextViewPlaySong"
             android:layout_alignParentTop="true"
@@ -20,7 +20,7 @@
             />
 
         <TextView
-            android:text="Tuan Hung"
+            android:text="Na"
             android:id="@+id/singer"
             style="@style/TextViewPlaySong"
             android:textSize="12sp"
@@ -73,7 +73,7 @@
         <LinearLayout
             android:layout_weight="1"
             android:orientation="vertical"
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content">
 
             <ImageButton

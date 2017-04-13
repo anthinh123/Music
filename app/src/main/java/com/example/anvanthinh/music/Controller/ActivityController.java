@@ -5,6 +5,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.example.anvanthinh.music.ListViewCallbacks;
+
 /**
  * Created by An Van Thinh on 2/19/2017.
  */
@@ -25,4 +27,5 @@ public abstract class ActivityController extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         return super.onOptionsItemSelected(item);
     }
+
 }

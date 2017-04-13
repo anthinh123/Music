@@ -3,7 +3,6 @@
     android:id="@+id/mini_infor"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_gravity="bottom"
     android:orientation="horizontal"
     android:visibility="visible">
 

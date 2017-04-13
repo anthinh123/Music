@@ -3,7 +3,10 @@ package com.example.anvanthinh.music.ui;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
+import android.os.Build;
 import android.provider.MediaStore;
+import android.support.annotation.RequiresApi;
+import android.support.v4.app.Fragment;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -29,6 +32,8 @@ public class InforMusicMini extends LinearLayout implements View.OnClickListener
     private ImageButton mPlayPause;
     private LinearLayout mInforSong;
     private  boolean isPlaying;
+    private ListSongFragment mListSongFragment;
+    private Cursor mCursor; // thong tin bai hat dang duoc play
 
     public  InforMusicMini(Context context) {
         super(context);
@@ -39,6 +44,11 @@ public class InforMusicMini extends LinearLayout implements View.OnClickListener
         LayoutInflater.from(context).inflate(R.layout.infor_music_mini, this, true);
     }
 
+    public void setFragment(ListSongFragment f){
+        mListSongFragment = f;
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     protected void onFinishInflate() {
         super.onFinishInflate();
@@ -48,14 +58,13 @@ public class InforMusicMini extends LinearLayout implements View.OnClickListener
         mPlayPause = (ImageButton)findViewById(R.id.play_pause);
         mInforSong = (LinearLayout) findViewById(R.id.infor_song);
         mPlayPause.setImageDrawable(getContext().getDrawable(R.drawable.ic_play_arrow_black_24dp));
-        mNameSong.setOnClickListener(this);
-        mNameSinger.setOnClickListener(this);
         mInforSong.setOnClickListener(this);
         mPlayPause.setOnClickListener(this);
         Animation rotateAnimation  = AnimationUtils.loadAnimation(getContext(), R.anim.android_rotate_animation);
         mAvatar.startAnimation(rotateAnimation);
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     public void onClick(View v) {
         switch (v.getId()){
@@ -75,13 +84,16 @@ public class InforMusicMini extends LinearLayout implements View.OnClickListener
                 }
                 break;
             case R.id.infor_song:
+                mListSongFragment.movePlaySong(mCursor);
                 break;
         }
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     public void update(Cursor cursor) {
         if (cursor != null){
+            mCursor = cursor;
             mNameSong.setText("" + cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media.TITLE)));
             mNameSinger.setText("" + cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media.ARTIST)));
             mPlayPause.setImageDrawable(getContext().getDrawable(R.drawable.ic_pause_white_24dp));
