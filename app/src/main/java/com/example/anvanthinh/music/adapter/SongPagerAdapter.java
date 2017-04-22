@@ -8,6 +8,7 @@ import android.support.v4.app.FragmentStatePagerAdapter;
 import com.example.anvanthinh.music.R;
 import com.example.anvanthinh.music.ui.AlbumListFragment;
 import com.example.anvanthinh.music.ui.ListSongFragment;
+import com.example.anvanthinh.music.ui.MusicFragment;
 import com.example.anvanthinh.music.ui.PlayListFragment;
 import com.example.anvanthinh.music.ui.SingerListFragment;
 

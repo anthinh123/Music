@@ -18,34 +18,43 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.OvershootInterpolator;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 
 import com.example.anvanthinh.music.Animation.BlurBuilder;
+import com.example.anvanthinh.music.Controller.MainActivity;
 import com.example.anvanthinh.music.ListViewCallbacks;
+import com.example.anvanthinh.music.Music;
 import com.example.anvanthinh.music.R;
 import com.example.anvanthinh.music.adapter.ListAdapter;
+
+import jp.wasabeef.recyclerview.animators.SlideInLeftAnimator;
+import jp.wasabeef.recyclerview.animators.SlideInUpAnimator;
 
 /**
  * Created by An Van Thinh on 2/19/2017.
  */
 
 public class ListSongFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
-    private final int ID_SONG_LOADER = 0;
+    public static final int ID_SONG_LOADER = 0;
     public static final String NAME_SONG = "name song";
     public static final String ARISTS = "arists";
+    public static final String DURATION = "duration";
     private ListAdapter mAdapter;
     private RecyclerView mList;
     private RecyclerView.LayoutManager mLayout;
-    private InforMusicMini mMiniInfor;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.list_song_fragment , null);
+
         mList = (RecyclerView)v.findViewById(R.id.list_song);
-        mMiniInfor = (InforMusicMini)v.findViewById(R.id.mini_infor);
-        mMiniInfor.setFragment(this);
+        SlideInUpAnimator animator = new SlideInUpAnimator(new OvershootInterpolator(1f));
+        mList.setItemAnimator(animator);
+        mList.getItemAnimator().setMoveDuration(1000);
+
         getActivity().getSupportLoaderManager().initLoader(ID_SONG_LOADER, null, this);
         return v;
     }
@@ -53,13 +62,9 @@ public class ListSongFragment extends Fragment implements LoaderManager.LoaderCa
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+
         mLayout = new LinearLayoutManager(getActivity());
         mList.setLayoutManager(mLayout);
-    }
-
-    @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
     }
 
     @Override
@@ -75,8 +80,12 @@ public class ListSongFragment extends Fragment implements LoaderManager.LoaderCa
 
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
-        mAdapter = new ListAdapter( getContext(), data, this);
-        mAdapter.addObserver(mMiniInfor);
+        mAdapter = new ListAdapter( getContext(), data);
+        Activity activity = getActivity();
+        if (activity instanceof MainActivity) {
+            MusicFragment.OnNewSongPlayListener listener = ((MainActivity) activity).getOnNewSongPlayListener();
+            mAdapter.setOnNewSongPlayListener(listener);
+        }
         mList.setAdapter(mAdapter);
     }
 
@@ -84,22 +93,6 @@ public class ListSongFragment extends Fragment implements LoaderManager.LoaderCa
     public void onLoaderReset(Loader<Cursor> loader) {
 
     }
-
-    public void showMiniInfor(){
-        mMiniInfor.setVisibility(View.VISIBLE);
-    }
-
-    public void movePlaySong(Cursor cursor){
-        ScreenPlaySongFragment f = new ScreenPlaySongFragment();
-        final String name = cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media.TITLE));
-        final String arists = cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media.ARTIST));
-        Bundle bun = new Bundle();
-        bun.putString(NAME_SONG, name);
-        bun.putString(ARISTS, name);
-        f.setArguments(bun);
-        getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.pane_list_music, f).commit();
-    }
-
 }
 
 

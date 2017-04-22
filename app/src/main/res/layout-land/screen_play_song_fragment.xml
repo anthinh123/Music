@@ -28,8 +28,8 @@
             />
 
         <ImageButton
-            android:id="@+id/more"
-            android:src="@drawable/ic_more_vert_black_24dp"
+            android:id="@+id/list"
+            android:src="@drawable/ic_queue_music_white_24dp"
             android:layout_alignParentRight="true"
             android:background="@drawable/pause_play_mini"
             android:layout_width="40dp"

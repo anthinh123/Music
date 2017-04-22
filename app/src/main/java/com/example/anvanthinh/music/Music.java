@@ -10,7 +10,7 @@ public class Music implements Serializable {
     private String name_song;
     private String name_singer;
     private byte[] avatar;
-    private int time;
+    private long duration;
     private String like;
     private String path;
     private int stt;
@@ -39,12 +39,12 @@ public class Music implements Serializable {
         this.avatar = avatar;
     }
 
-    public int getTime() {
-        return time;
+    public long getDuration() {
+        return duration;
     }
 
-    public void setTime(int time) {
-        this.time = time;
+    public void setDuration(long time) {
+        this.duration = time;
     }
 
     public String getPath() {

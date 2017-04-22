@@ -10,10 +10,16 @@
         android:id="@+id/story_item_frame"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="16dp"
-        android:layout_marginRight="16dp"
         android:layout_marginBottom="6dp"
         android:orientation="horizontal">
+
+        <ImageView
+            android:id="@+id/image"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginTop="6dp"
+            android:layout_marginRight="16dp"
+            />
 
         <LinearLayout
             android:id="@+id/infor_song"
@@ -68,7 +74,8 @@
             android:layout_width="30dp"
             android:layout_height="30dp"
             android:layout_gravity="center"
-            android:background="@drawable/ic_more_vert_black_24dp"
+            android:background="@drawable/pause_play_mini"
+            android:src="@drawable/ic_more_vert_black_24dp"
             android:padding="4dp"
              />
 
