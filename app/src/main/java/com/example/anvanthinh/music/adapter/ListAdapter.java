@@ -1,7 +1,9 @@
 package com.example.anvanthinh.music.adapter;
 
 import android.annotation.TargetApi;
+import android.app.Activity;
 import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.ContentUris;
 import android.content.Context;
 import android.content.Intent;
@@ -9,8 +11,10 @@ import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Build;
+import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.v4.app.NotificationCompat;
+import android.support.v4.app.TaskStackBuilder;
 import android.support.v4.graphics.drawable.RoundedBitmapDrawable;
 import android.support.v4.graphics.drawable.RoundedBitmapDrawableFactory;
 import android.support.v4.widget.CursorAdapter;
@@ -28,26 +32,35 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.target.BitmapImageViewTarget;
+import com.example.anvanthinh.music.Controller.MainActivity;
+import com.example.anvanthinh.music.Music;
 import com.example.anvanthinh.music.MusicService;
 import com.example.anvanthinh.music.R;
 import com.example.anvanthinh.music.ui.MusicFragment;
+import com.example.anvanthinh.music.ui.NotificationMusic;
 
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+
+import es.claucookie.miniequalizerlibrary.EqualizerView;
 
 /**
  * Created by An Van Thinh on 3/29/2017.
  */
 
 public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder> {
-    private static final int ID_NOTIFICATION = 100;
     private CursorAdapter mCursorAdapter;
     private Context mContext;
+    private Activity mActivity;
     private MusicFragment.OnNewSongPlayListener mOnNewSongPlayListener;
+    private EqualizerView mEqualizer;
+    private ArrayList<Music> mArrSong;
 
-    public ListAdapter(Context c, Cursor cursor) {
+    public ListAdapter(Activity a, Context c, Cursor cursor) {
         mContext = c;
+        mActivity = a;
+        mArrSong = new ArrayList<Music>();
         mCursorAdapter = new CursorAdapter(mContext, cursor, 0) {
             @Override
             public View newView(Context context, Cursor cursor, ViewGroup parent) {
@@ -58,6 +71,15 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder> {
             public void bindView(View view, Context context, Cursor cursor) {
             }
         };
+        for (cursor.moveToFirst(); !cursor.isAfterLast(); cursor.moveToNext()) {
+            Music m = new Music();
+            m.setPath(cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media.DATA)));
+            m.setName_singer(cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media.ARTIST)));
+            m.setName_song(cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media.TITLE)));
+            m.setDuration(cursor.getLong(cursor.getColumnIndex(MediaStore.Audio.Media.DURATION)));
+            m.setAlbumId(cursor.getLong(cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.ALBUM_ID)));
+            mArrSong.add(m);
+        }
     }
 
     @Override
@@ -86,19 +108,11 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder> {
         holder.mTime.setText(sdf.format(time));
 
         final Long albumId = cursor.getLong(cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.ALBUM_ID));
-        final Uri sArtworkUri = Uri.parse("content://media/external/audio/albumart");
-        final Uri albumArtUri = ContentUris.withAppendedId(sArtworkUri, albumId);
-        Glide.with(mContext).load(albumArtUri).asBitmap().centerCrop().placeholder(R.drawable.album_art)
-                .into(new BitmapImageViewTarget(holder.mAvatar) {
-                    @Override
-                    protected void setResource(Bitmap resource) {
-                        RoundedBitmapDrawable circularBitmapDrawable =
-                                RoundedBitmapDrawableFactory.create(mContext.getResources(), resource);
-                        circularBitmapDrawable.setCircular(true);
-                        holder.mAvatar.setImageDrawable(circularBitmapDrawable);
-                    }
-                });
+        setImageAvatar(mContext, holder.mAvatar, albumId);
 
+//        mAvatar.setVisibility(View.GONE);
+//        mEqualizer.setVisibility(View.VISIBLE);
+//        mEqualizer.animateBars();
     }
 
     @Override
@@ -125,6 +139,7 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder> {
             mInforSong = (LinearLayout) itemView.findViewById(R.id.infor_song);
             mItemView = (LinearLayout) itemView.findViewById(R.id.itemview);
             mAvatar = (ImageView) itemView.findViewById(R.id.image);
+            mEqualizer = (EqualizerView) itemView.findViewById(R.id.equalizer_view);
 
             mName.setOnClickListener(this);
             mTime.setOnClickListener(this);
@@ -146,19 +161,18 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder> {
                 case R.id.name:
                 case R.id.singer:
                     playSong(this.getAdapterPosition());
-                    showNotification();
                     mItemView.setBackground(mContext.getResources().getDrawable(R.drawable.custom_item_music));
-
                     if (mOnNewSongPlayListener != null) {
                         Cursor c = (Cursor) mCursorAdapter.getItem(this.getAdapterPosition());
-                        mOnNewSongPlayListener.onUpdateMiniInfor(c);
+                        mOnNewSongPlayListener.onUpdateMiniInfor(c, this.getAdapterPosition());
                     }
+                    //onBindViewHolder(this, getAdapterPosition());
                     break;
             }
         }
 
         private void showPopupMenu() {
-            final PopupMenu popup = new PopupMenu(mContext, mMore);
+            final PopupMenu popup = new PopupMenu(mActivity, mMore);
             popup.getMenuInflater().inflate(R.menu.menu_more_listview, popup.getMenu());
             popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
                 public boolean onMenuItemClick(MenuItem item) {
@@ -173,21 +187,8 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder> {
         Intent i = new Intent(mContext, MusicService.class);
         i.setAction(MusicService.PLAY_SONG_FROM_LIST);
         i.putExtra(MusicService.PLAY_SONG_FROM_LIST, postion);
+        i.putExtra(MusicService.DANH_SACH_NHAC, mArrSong);
         mContext.startService(i);
-    }
-
-    // ham hien thi notification khi bam choi nhac
-    public void showNotification() {
-        RemoteViews remoteViews = new RemoteViews(mContext.getPackageName(), R.layout.infor_music_mini);
-        NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(
-                mContext).setSmallIcon(R.drawable.ic_more).setContent(remoteViews);
-//        Intent resultIntent = new Intent(mContext, MainActivity.class);
-//        TaskStackBuilder stackBuilder = TaskStackBuilder.create(mContext);
-//        stackBuilder.addParentStack(NotificationMusic.class);
-//        stackBuilder.addNextIntent(resultIntent);
-//        PendingIntent resultPendingIntent = stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
-        NotificationManager mNotificationManager = (NotificationManager) mContext.getSystemService(Context.NOTIFICATION_SERVICE);
-        mNotificationManager.notify(ID_NOTIFICATION, mBuilder.build());
     }
 
     public void setOnNewSongPlayListener(MusicFragment.OnNewSongPlayListener onNewSongPlayListener) {
@@ -199,4 +200,28 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder> {
         //mCursorAdapter.(position);
         notifyItemRemoved(position);
     }
+
+    public static void setImageAvatar(final Context context, final ImageView imageView, long albumId) {
+        final Uri sArtworkUri = Uri.parse("content://media/external/audio/albumart");
+        final Uri albumArtUri = ContentUris.withAppendedId(sArtworkUri, albumId);
+        Glide.with(context).load(albumArtUri).asBitmap().centerCrop().placeholder(R.drawable.album_art)
+                .into(new BitmapImageViewTarget(imageView) {
+                    @Override
+                    protected void setResource(Bitmap resource) {
+                        RoundedBitmapDrawable circularBitmapDrawable =
+                                RoundedBitmapDrawableFactory.create(context.getResources(), resource);
+                        circularBitmapDrawable.setCircular(true);
+                        imageView.setImageDrawable(circularBitmapDrawable);
+                    }
+                });
+    }
+
+    public void stopEliquazor() {
+        // mEqualizer.stopBars();
+    }
+
+    public void startEliquazor() {
+        // mEqualizer.animateBars();
+    }
+
 }

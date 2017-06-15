@@ -13,6 +13,7 @@ public class Music implements Serializable {
     private long duration;
     private String like;
     private String path;
+    private long albumId;
     private int stt;
 
     public String getName_song() {
@@ -69,5 +70,13 @@ public class Music implements Serializable {
 
     public void setStt(int stt) {
         this.stt = stt;
+    }
+
+    public long getAlbumId() {
+        return albumId;
+    }
+
+    public void setAlbumId(long albumId) {
+        this.albumId = albumId;
     }
 }

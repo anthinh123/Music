@@ -40,7 +40,11 @@ public class TwoPaneController extends ActivityController implements MusicFragme
     }
 
     @Override
-    public void onUpdateMiniInfor(Cursor c) {
+    public void onStop() {
+    }
 
+    @Override
+    public void onUpdateMiniInfor(Cursor c, int position) {
+        // thinh: khong lam gi
     }
 }

@@ -13,14 +13,6 @@
 
         <TextView
             android:text="Na"
-            android:id="@+id/song"
-            style="@style/TextViewPlaySong"
-            android:layout_alignParentTop="true"
-            android:textSize="16sp"
-            />
-
-        <TextView
-            android:text="Na"
             android:id="@+id/singer"
             style="@style/TextViewPlaySong"
             android:textSize="12sp"
@@ -35,16 +27,25 @@
             android:layout_width="40dp"
             android:layout_height="40dp" />
 
+        <TextView
+            android:text="Na"
+            android:id="@+id/song"
+            style="@style/TextViewPlaySong"
+            android:textSize="16sp"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true" />
+
     </RelativeLayout>
 
     <android.support.v4.view.ViewPager
-        android:id="@+id/image_album"
-        android:layout_width="match_parent"
+        android:id="@+id/viewpager_song"
+        android:layout_width="250dp"
+        android:layout_gravity="center_horizontal"
         android:layout_marginTop="10dp"
         android:layout_marginBottom="10dp"
         android:layout_weight="1"
         android:layout_height="0dp">
-
     </android.support.v4.view.ViewPager>
 
     <LinearLayout

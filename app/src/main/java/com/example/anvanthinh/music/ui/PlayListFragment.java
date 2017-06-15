@@ -23,10 +23,6 @@ public class PlayListFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.play_list_fragment, container, false);
-        View view = (LinearLayout) v.findViewById(R.id.playlist);
-        Bitmap originalBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.test_background);
-        Bitmap blurredBitmap = BlurBuilder.blur( getActivity(), originalBitmap );
-        view.setBackgroundDrawable( new BitmapDrawable( getResources(), blurredBitmap ) );
         return v;
     }
 }

@@ -1,15 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:appcompat="http://schemas.android.com/tools">
     <item
-        android:id="@+id/action_search"
+        android:id="@+id/search"
         android:icon="@drawable/ic_search_white_24dp"
         android:title="@string/search"
-        android:actionViewClass="android.support.v7.widget.SearchView"
-        app:showAsAction="always" />
+        app:actionViewClass="android.support.v7.widget.SearchView"
+        app:showAsAction="always"/>
 
     <item
         android:id="@+id/time"
         android:title="@string/alarm"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/equalizor"
+        android:title="@string/equalizor"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/search_online"
+        android:title="@string/search_online"
         app:showAsAction="never" />
 </menu>

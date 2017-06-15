@@ -44,20 +44,25 @@ public class MusicFragment extends Fragment  {
         mMiniInfor.setVisibility(View.VISIBLE);
     }
 
-    public void movePlaySong(Cursor cursor){
-        ScreenPlaySongFragment f = new ScreenPlaySongFragment();
-        final String name = cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media.TITLE));
-        final String arists = cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media.ARTIST));
-        final long duration  = cursor.getLong(cursor.getColumnIndex(MediaStore.Audio.Media.DURATION));
-        Bundle bun = new Bundle();
-        bun.putString(ListSongFragment.NAME_SONG, name);
-        bun.putString(ListSongFragment.ARISTS, arists);
-        bun.putLong(ListSongFragment.DURATION, duration);
+    public void moveScreenPlaySong(Bundle bun){
+        final ScreenPlaySongFragment f = new ScreenPlaySongFragment();
         f.setArguments(bun);
         getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.pane_list_music, f).commit();
     }
 
+    public void replaceFragmentPager(Fragment item, int tab) {
+        mAdapter.replaceFragment(item, tab);
+    }
+
     public interface OnNewSongPlayListener {
-        void onUpdateMiniInfor(Cursor c);
+        void onUpdateMiniInfor(Cursor c, int position);
+    }
+
+    public void restoreTabPager(){
+        mAdapter.restoreTab();
+    }
+
+    public boolean isChangeTab(){
+        return mAdapter.getIsChangetab();
     }
 }

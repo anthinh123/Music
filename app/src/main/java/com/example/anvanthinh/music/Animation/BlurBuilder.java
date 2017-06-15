@@ -14,7 +14,7 @@ import android.renderscript.ScriptIntrinsicBlur;
  */
 
 public class BlurBuilder {
-    private static final float BITMAP_SCALE = 0.05f;
+    private static final float BITMAP_SCALE = 0.25f;
     private static final float BLUR_RADIUS = 8.5f;
 
     @SuppressLint("NewApi")

@@ -1,2 +1,2 @@
-include ':app', ':library_viewpagers', ':player_view'
+include ':app', ':library_viewpagers', ':player_view', ':library_equalizer'
 project(':library_viewpagers').projectDir = new File('library_viewpager')

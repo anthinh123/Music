@@ -3,7 +3,8 @@
 <android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+   >
 
     <LinearLayout
         android:id="@+id/one_pane"
@@ -15,6 +16,8 @@
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:elevation="0dp"
+            android:layout_marginTop="16dp"
             app:theme="@style/ToolBarStyle"
             >
         </android.support.v7.widget.Toolbar>
